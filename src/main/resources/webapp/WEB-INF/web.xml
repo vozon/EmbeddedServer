@@ -2,7 +2,39 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
-
+	
+	<!-- For KamiMonitor -->
+	<context-param>
+		<param-name>KamiMonitorConfig</param-name>
+		<param-value>/WEB-INF/KamiMonitor.xml</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.kami.monitor.JwebapListener</listener-class>
+	</listener>
+	<!-- 
+	<servlet>
+		<servlet-name>detect</servlet-name>
+		<servlet-class>org.jwebap.ui.controler.JwebapServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>detect</servlet-name>
+		<url-pattern>/detect/*</url-pattern>
+	</servlet-mapping>
+	<filter>
+		<filter-name>PageDetectFilter</filter-name>
+		<filter-class>org.jwebap.plugin.tracer.http.DetectFilter</filter-class>
+		<init-param>
+			<param-name>excludeUrls</param-name>
+			<param-value>/detect;/detect/*;*.js;*.jpg;*.htm;*.html;*.gif;*.png;*.css;*.swf</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>PageDetectFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	-->
+	<!-- For KamiMonitor -->
+	
 	<servlet>
 		<servlet-name>HelloWorldServlet</servlet-name>
 		<servlet-class>com.mdmp.server.demo.servlets.HelloWorldServlet</servlet-class>
