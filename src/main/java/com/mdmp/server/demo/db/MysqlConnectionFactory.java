@@ -6,11 +6,13 @@ import java.sql.DriverManager;
 
 public class MysqlConnectionFactory {
 	//private static final String connectionURL = ConfigurationManager.getDefaultConfig().getValue("hive.url");
-	//private static final String connectionURL = "jdbc:mysql://localhost:3306/hello?characterEncoding=UTF-8";
-	private static final String connectionURL = "jdbc:mysql://10.224.195.81:3306/mdmp?characterEncoding=UTF-8";
 	private static final String driverName = "com.mysql.jdbc.Driver";
-	private static final String user = "johnny";
-	private static final String pass = "pass";
+	private static final String connectionURL = "jdbc:mysql://localhost:3306/mdmp?characterEncoding=UTF-8";
+	private static final String user = "root";
+	private static final String pass = "8223152";
+//	private static final String connectionURL = "jdbc:mysql://10.224.195.81:3306/mdmp?characterEncoding=UTF-8";
+//	private static final String user = "johnny";
+//	private static final String pass = "pass";
 	static {
 		try {
 			Class.forName(driverName);
@@ -32,7 +34,7 @@ public class MysqlConnectionFactory {
 			if (testConnection != null)
 				testConnection.close();
 		} catch (Exception e) {
-			System.out.println("Error to close mysql connection£º");
+			System.out.println("Error to close mysql connectionï¿½ï¿½");
 			e.printStackTrace();
 		}
 	}

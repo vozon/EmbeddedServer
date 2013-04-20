@@ -1,6 +1,8 @@
 package com.mdmp.server.util;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.json.JSONObject;
 
@@ -12,11 +14,11 @@ public class JsonUtils {
 	 * @param obj
 	 * @return
 	 */
-	public static byte[] convertFrom(JSONObject obj) throws Exception {
+	public static String convertFrom(JSONObject obj) throws Exception {
 		if (obj == null) {
-			return "".getBytes("utf-8");
+			return "";
 		}
-		return obj.toString().getBytes("utf-8");
+		return obj.toString();
 	}
 
 	/**
@@ -52,12 +54,21 @@ public class JsonUtils {
 	 * @param jsonStr
 	 * @return
 	 */
-	/*public static <T> T convertFrom(String jsonStr, Class<T> clazz)
+	public static <T> T convertFrom(String jsonStr, Class<T> clazz)
 			throws Exception {
-		return mapper.readValue(jsonStr, clazz);
+		JSONObject json = new JSONObject(jsonStr);
+		T newT = clazz.newInstance();
+		Iterator<String> iter = json.keys();
+		while(iter.hasNext()){
+			String key = iter.toString();
+			Field m = clazz.getDeclaredField(key);
+			Class<?> filedType = m.getType();
+			Object value = json.getString(key);
+		}
+		return newT;
 	}
 
-	public static <T> List<T> convertToList(String jsonStr, Class<T> clazz)
+	/*public static <T> List<T> convertToList(String jsonStr, Class<T> clazz)
 			throws Exception {
 		List<T> list = new ArrayList<T>();
 		JSONArray array = JSONArray.fromObject(jsonStr);

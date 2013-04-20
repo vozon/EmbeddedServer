@@ -1,29 +1,63 @@
 package com.mdmp.server.demo.jetty;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
-import java.util.zip.Deflater;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 
 import com.mdmp.server.util.JsonUtils;
 
 public class MDMP_Android_Client_Demo {
 	private static final String SERVER_URL = "http://localhost:8090/mdmp/update";
 
+	public static void sendEventsToServer1(String appKey, SendData data) {
+		URL url = null;
+	    HttpURLConnection httpurlconnection = null;
+	    try
+	    {
+	      url = new URL(SERVER_URL);
+	      httpurlconnection = (HttpURLConnection) url.openConnection();
+	      httpurlconnection.setDoInput(true);
+	      httpurlconnection.setDoOutput(true);
+	      httpurlconnection.setRequestMethod("POST");
+	      //// POST CONTENT
+			// String username="username=02000001";
+			// httpurlconnection.getOutputStream().write(username.getBytes());
+			// httpurlconnection.getOutputStream().flush();
+			// httpurlconnection.getOutputStream().close();
+	      DataOutputStream dos = new DataOutputStream(httpurlconnection.getOutputStream());
+	      //String postContent = URLEncoder.encode("appKey", "UTF-8") + "=" + URLEncoder.encode(appKey, "UTF-8");
+	      String postContent = JsonUtils.convertFrom(data.getJson());
+	      dos.write(postContent.getBytes());
+	      dos.flush();
+	      dos.close();
+	      //// POST CONTENT
+	      
+	      int code = httpurlconnection.getResponseCode();
+	      System.out.println("code   " + code);
+
+	    }
+	    catch(Exception e)
+	    {
+	      e.printStackTrace();
+	    }
+	    finally
+	    {
+	      if(httpurlconnection!=null)
+	        httpurlconnection.disconnect();
+	    }
+	}
+	
 	public static void sendEventsToServer(String appKey, SendData data) {
 		HttpURLConnection connection = null;
 		//Deflater deflater = null;
 		DataOutputStream output = null;
 		try {
-			byte[] input = JsonUtils.convertFrom(data.getJson());
+			byte[] input = JsonUtils.convertFrom(data.getJson()).getBytes();
 //			deflater = new Deflater();
 //			deflater.setInput(input);
 //			deflater.finish();
@@ -59,43 +93,43 @@ public class MDMP_Android_Client_Demo {
 			output = new DataOutputStream(connection.getOutputStream());
 			output.write(input);
 			output.flush();
-			int httpCode = connection.getResponseCode();
-
-			if (false) {
-//				if (httpCode == 200) {
-				StringBuffer sb = new StringBuffer();
-				BufferedReader reader = null;
-				try {
-					reader = new BufferedReader(new InputStreamReader(
-							connection.getInputStream()));
-					String line = null;
-					while ((line = reader.readLine()) != null)
-						sb.append(line).append("\n");
-				} catch (IOException e) {
-//					Log.e("Mofang",
-//							"[sendEventsToServer]IOException: get response");
-					e.printStackTrace();
-				} finally {
-					if (reader != null) {
-						try {
-							reader.close();
-						} catch (IOException e) {
-//							Log.e("Mofang",
-//									"[sendEventsToServer]IOException: reader.close()");
-							e.printStackTrace();
-						}
-					}
-				}
-				String response = sb.toString();
-
-//				if (response.indexOf("HTTPSQS_PUT_OK") > -1) {
-//					StatEvent.signSentEvent(dbManager, data.getIdList());
+//			int httpCode = connection.getResponseCode();
 //
-//					StatEvent.clearAccessPath(dbManager);
-//					StatEvent.clearHistoryEvents(dbManager,
-//							getDateAndHour(time)[0]);
+//			if (false) {
+////				if (httpCode == 200) {
+//				StringBuffer sb = new StringBuffer();
+//				BufferedReader reader = null;
+//				try {
+//					reader = new BufferedReader(new InputStreamReader(
+//							connection.getInputStream()));
+//					String line = null;
+//					while ((line = reader.readLine()) != null)
+//						sb.append(line).append("\n");
+//				} catch (IOException e) {
+////					Log.e("Mofang",
+////							"[sendEventsToServer]IOException: get response");
+//					e.printStackTrace();
+//				} finally {
+//					if (reader != null) {
+//						try {
+//							reader.close();
+//						} catch (IOException e) {
+////							Log.e("Mofang",
+////									"[sendEventsToServer]IOException: reader.close()");
+//							e.printStackTrace();
+//						}
+//					}
 //				}
-			}
+//				String response = sb.toString();
+//
+////				if (response.indexOf("HTTPSQS_PUT_OK") > -1) {
+////					StatEvent.signSentEvent(dbManager, data.getIdList());
+////
+////					StatEvent.clearAccessPath(dbManager);
+////					StatEvent.clearHistoryEvents(dbManager,
+////							getDateAndHour(time)[0]);
+////				}
+//			}
 		} catch (Exception e) {
 			//Log.e("Mofang", "[sendEventsToServer]Exception");
 			e.printStackTrace();
@@ -121,14 +155,14 @@ public class MDMP_Android_Client_Demo {
 		SendData data = new SendData();
 		JSONObject json = new JSONObject();
 		Date d = new Date();
-		json.append("resumeTime", d.getTime());
-		json.append("appKey", "test1_appkey");
-		json.append("osType", "android");
-		json.append("category", "avtivite01");
-		json.append("action", "click");
-		json.append("devId", "12345678");
-		json.append("value", "2");
+		json.put("resumeTime", String.valueOf(d.getTime()));
+		json.put("appKey", "test1_appkey");
+		json.put("osType", "android");
+		json.put("category", "avtivite01");
+		json.put("action", "click");
+		json.put("devId", "12345678");
+		json.put("value", "2");
 		data.setJson(json);
-		sendEventsToServer("test1_appkey", data);
+		sendEventsToServer1("test1_appkey", data);
 	}
 }

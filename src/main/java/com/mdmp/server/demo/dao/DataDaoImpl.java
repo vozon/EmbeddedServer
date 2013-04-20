@@ -1,6 +1,5 @@
 package com.mdmp.server.demo.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,6 +31,7 @@ public class DataDaoImpl implements DataDao {
 	// execute insertion language
 	public boolean insertSQL(String sql) {
 		try {
+			System.out.println("SQL:" + sql);
 			statement = MysqlConnectionFactory.getConnection().prepareStatement(sql);
 			statement.executeUpdate();
 			return true;
@@ -124,14 +124,14 @@ public class DataDaoImpl implements DataDao {
 
 	public boolean addDataBean(DataBean newBean) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("INSERT INTO mdmp VALUES (");
-		sb.append(newBean.getResumeTime() + ", ");
-		sb.append(newBean.getAppKey() + ", ");
-		sb.append(newBean.getOsType() + ", ");
-		sb.append(newBean.getCategory() + ", ");
-		sb.append(newBean.getAction() + ", ");
-		sb.append(newBean.getDevId() + ", ");
-		sb.append(newBean.getValue() + ")");
+		sb.append("INSERT INTO mdmp VALUES ('");
+		sb.append(newBean.getResumeTime() + "', '");
+		sb.append(newBean.getAppKey() + "', '");
+		sb.append(newBean.getOsType() + "', '");
+		sb.append(newBean.getCategory() + "', '");
+		sb.append(newBean.getAction() + "', '");
+		sb.append(newBean.getDevId() + "', '");
+		sb.append(newBean.getValue() + "')");
 		return insertSQL(sb.toString());
 	}
 }
