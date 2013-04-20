@@ -9,6 +9,8 @@ public interface DataDao {
 	
 	public Set<DataBean> getAllDataBean();
 	
+	public boolean addDataBean(DataBean newBean);
+
 	public ResultSet selectSQL(String sql);
 
 	public boolean insertSQL(String sql);

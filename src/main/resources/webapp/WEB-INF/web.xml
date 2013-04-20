@@ -42,7 +42,27 @@
 
 	<servlet-mapping>
 		<servlet-name>HelloWorldServlet</servlet-name>
-		<url-pattern>/</url-pattern>
+		<url-pattern>/hello</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>MDMPListServlet</servlet-name>
+		<servlet-class>com.mdmp.server.demo.servlets.MDMPListServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>MDMPListServlet</servlet-name>
+		<url-pattern>/mdmp/list</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>MDMPInsertServlet</servlet-name>
+		<servlet-class>com.mdmp.server.demo.servlets.MDMPInsertServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>MDMPInsertServlet</servlet-name>
+		<url-pattern>/mdmp/update</url-pattern>
 	</servlet-mapping>
 
 </web-app>

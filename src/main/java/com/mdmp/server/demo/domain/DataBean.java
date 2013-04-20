@@ -13,7 +13,7 @@ public class DataBean {
 	private String osType;
 	private String category;
 	private String action;
-	private String dev_id;
+	private String devId;
 	private String value;
 	
 	public String getAppKey() {
@@ -40,11 +40,11 @@ public class DataBean {
 	public void setAction(String action) {
 		this.action = action;
 	}
-	public String getDev_id() {
-		return dev_id;
+	public String getDevId() {
+		return devId;
 	}
-	public void setDev_id(String dev_id) {
-		this.dev_id = dev_id;
+	public void setDevId(String dev_id) {
+		this.devId = dev_id;
 	}
 	public String getValue() {
 		return value;

@@ -4,21 +4,26 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.Set;
 
+import com.mdmp.server.demo.db.MysqlConnectionFactory;
 import com.mdmp.server.demo.domain.DataBean;
 
 public class DataDaoImpl implements DataDao {
-	private Connection conn = null;
+	//private Connection conn = null;
 	PreparedStatement statement = null;
 
 	// execute selection language
 	public ResultSet selectSQL(String sql) {
 		ResultSet rs = null;
 		try {
-			statement = conn.prepareStatement(sql);
+			statement = MysqlConnectionFactory.getConnection().prepareStatement(sql);
 			rs = statement.executeQuery(sql);
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return rs;
@@ -27,7 +32,7 @@ public class DataDaoImpl implements DataDao {
 	// execute insertion language
 	public boolean insertSQL(String sql) {
 		try {
-			statement = conn.prepareStatement(sql);
+			statement = MysqlConnectionFactory.getConnection().prepareStatement(sql);
 			statement.executeUpdate();
 			return true;
 		} catch (SQLException e) {
@@ -43,7 +48,7 @@ public class DataDaoImpl implements DataDao {
 	// execute delete language
 	public boolean deleteSQL(String sql) {
 		try {
-			statement = conn.prepareStatement(sql);
+			statement = MysqlConnectionFactory.getConnection().prepareStatement(sql);
 			statement.executeUpdate();
 			return true;
 		} catch (SQLException e) {
@@ -59,7 +64,7 @@ public class DataDaoImpl implements DataDao {
 	// execute update language
 	public boolean updateSQL(String sql) {
 		try {
-			statement = conn.prepareStatement(sql);
+			statement = MysqlConnectionFactory.getConnection().prepareStatement(sql);
 			statement.executeUpdate();
 			return true;
 		} catch (SQLException e) {
@@ -97,7 +102,36 @@ public class DataDaoImpl implements DataDao {
 	}
 
 	public Set<DataBean> getAllDataBean() {
-		// TODO Auto-generated method stub
-		return null;
+		ResultSet rs = selectSQL("SELECT * FROM mdmp");
+		Set<DataBean> dataSet = new HashSet<DataBean>();
+		try {
+			while (rs.next()){
+				DataBean newBean = new DataBean();
+				newBean.setResumeTime(rs.getString("resumeTime"));
+				newBean.setAppKey(rs.getString("appKey"));
+				newBean.setOsType(rs.getString("osType"));
+				newBean.setCategory(rs.getString("category"));
+				newBean.setAction(rs.getString("action"));
+				newBean.setDevId(rs.getString("devId"));
+				newBean.setValue(rs.getString("value"));
+				dataSet.add(newBean);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return dataSet;
+	}
+
+	public boolean addDataBean(DataBean newBean) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("INSERT INTO mdmp VALUES (");
+		sb.append(newBean.getResumeTime() + ", ");
+		sb.append(newBean.getAppKey() + ", ");
+		sb.append(newBean.getOsType() + ", ");
+		sb.append(newBean.getCategory() + ", ");
+		sb.append(newBean.getAction() + ", ");
+		sb.append(newBean.getDevId() + ", ");
+		sb.append(newBean.getValue() + ")");
+		return insertSQL(sb.toString());
 	}
 }
